@@ -3,13 +3,15 @@
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/gantt", { useNewUrlParser: true });
 
+//-----------Connexion à la base avec Mongoose-----------//
 let db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function() {
-  // we're connected!
 });
-
+//------------------------------------------------------//
 const Schema = mongoose.Schema;
+
+//-----------Schema de notre objet Gantt------------//
 const ganttSchema = new Schema({
   nameService: String,
   projects: [
@@ -45,5 +47,6 @@ const ganttSchema = new Schema({
     }
   ]
 });
+//------------------------------------------------//
 
 module.exports = mongoose.model("gantt", ganttSchema);
