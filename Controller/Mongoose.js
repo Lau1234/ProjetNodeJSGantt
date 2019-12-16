@@ -16,7 +16,7 @@ const ganttSchema = new Schema({
   nameService: String,
   projects: [
     {
-      name: String,
+      name: {type: String, required: true},
       desc: String,
       daysOff: {
         Mo: Boolean,
@@ -28,19 +28,19 @@ const ganttSchema = new Schema({
         Su: Boolean
       },
       workingHours: { start: Number, end: Number },
-      task: [
+      task: {type:[
         {
-          id: Number,
-          name: String,
+          id: {type:Number, required:true},
+          name: {type:String, required:true},
           desc: String,
-          start: Number,
-          end: Number,
+          start: {type:Number, required:true},
+          end: {type:Number, required:true},
           percentageProgress: Number,
           color: String,
           linkedTask: Array,
           ressources: Array
         }
-      ],
+      ], required:true},
       groupTask: [{ name: String, start: Number, end: Number }],
       resources: [{ name: String, cost: Number, type: String }],
       milestones: [{ name: String, date: Number }]
