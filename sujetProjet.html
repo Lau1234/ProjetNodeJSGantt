@@ -1,0 +1,216 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf8">
+<style type="text/css" style="display:none;"> P {margin-top:0;margin-bottom:0;} </style>
+</head>
+<body dir="ltr">
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Bonjour à tous,</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Vous trouverez ci-join le support de cours Part 4.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Concernant le Projet, vous le réaliserez en groupe de deux, nous déterminerons les groupes Lundi après-midi (16/12/2019).</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Vous devez créer un mini site qui contiendra uniquement un diagramme de <b>Gantt</b>.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Je vous conseille d'utiliser une librairie gratuite front vous permettant de vous faire gagner beaucoup de temps.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Attention cependant, il est possible que la librairie que vous aurez choisie vous oblige à retravailler les données à la volée par rapport à ce que j'attend coté serveur
+<span style="color: rgb(190, 91, 23);"><b style="color: rgb(190, 91, 23);">central</b></span>.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Car oui, la petite subtilité de ce projet, c'est que vous devrez communiquer en plus de votre page web vers votre serveur Node.js, mais aussi depuis votre serveur Node.js vers mon serveur central qui sera la pour enregistrer et envoyer à tous les groupes le
+ contenu de votre Gantt.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Donc pour résumer:</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+</p>
+<ul>
+<li>Vous devez faire un mini site web qui permet d'afficher un diagramme de Gantt</li><li>Il faut pouvoir y ajouter des taches, les modifier, les supprimer</li><li>Mais vous devez aussi voir les diagrammes de Gantt des autres groupes (vous ne pourrez pas les modifier, le serveur central ne vous y autorisera pas) qui seront mis à jour en temps réel</li></ul>
+<p></p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Je vous donne la solution pour vous connecter sur le serveur central depuis votre serveur node.js.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Il suffit d'utiliser le module &quot;socket.io-client&quot; qui est une dépendance de socket.io (donc déjà installé sur votre<span>&nbsp;</span><span style="margin: 0px">projet</span>)&nbsp;:</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+</p>
+<div style="margin: 0px; font-size: 14px; line-height: 19px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30);">
+<div style="margin: 0px"><span style="margin: 0px; color: rgb(152, 114, 162);">
+<div style="margin: 0px; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30);">
+<div style="margin: 0px"><span style="margin: 0px; color: rgb(152, 114, 162);">
+<div style="margin: 0px; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30);">
+<div style="margin: 0px"><span style="margin: 0px; color: rgb(152, 114, 162);">const</span>&nbsp;<span style="margin: 0px; color: rgb(96, 137, 180);">socket</span>&nbsp;<span style="margin: 0px; color: rgb(103, 104, 103);">=</span>&nbsp;<span style="margin: 0px; color: rgb(152, 114, 162);">require</span>(<span style="margin: 0px; color: rgb(154, 168, 58);">'socket.io-client'</span>);</div>
+<div style="margin: 0px"><span style="margin: 0px; color: rgb(152, 114, 162);">let</span>&nbsp;<span style="margin: 0px; color: rgb(96, 137, 180);">client</span>&nbsp;<span style="margin: 0px; color: rgb(103, 104, 103);">=</span>&nbsp;<span style="margin: 0px; color: rgb(96, 137, 180);">socket</span>.<span style="margin: 0px; color: rgb(206, 103, 0);">connect</span>(<span style="margin: 0px; color: rgb(154, 168, 58);">'Adresse
+ IP bientôt disponnible'</span>,&nbsp;{reconnect:&nbsp;<span style="margin: 0px; color: rgb(255, 0, 128);">true</span>}); // L'adresse IP vous sera communiqué dans un mail ultérieur</div>
+<br>
+<div style="margin: 0px"><span style="margin: 0px; color: rgb(96, 137, 180);">client</span>.<span style="margin: 0px; color: rgb(206, 103, 0);">on</span>(<span style="margin: 0px; color: rgb(154, 168, 58);">'connect'</span>,&nbsp;()&nbsp;<span style="margin: 0px; color: rgb(152, 114, 162);">=&gt;</span>&nbsp;{</div>
+<div style="margin: 0px">&nbsp;&nbsp;<span style="margin: 0px; color: rgb(199, 68, 74);">console</span>.<span style="margin: 0px; color: rgb(152, 114, 162);">log</span>(<span style="margin: 0px; color: rgb(154, 168, 58);">'connected'</span>)</div>
+<br>
+<div style="margin: 0px">&nbsp;&nbsp;<span style="margin: 0px; color: rgb(96, 137, 180);">client</span>.<span style="margin: 0px; color: rgb(206, 103, 0);">emit</span>(<span style="margin: 0px; color: rgb(154, 168, 58);">'needHelp'</span>);</div>
+<div style="margin: 0px">});</div>
+</div>
+</span></div>
+<div style="margin: 0px"></div>
+</div>
+</span></div>
+</div>
+<i style="font-family: Calibri, Arial, Helvetica, sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);"><span style="margin: 0px; color: rgb(117, 123, 128);">(l'event &quot;needHelp&quot; permet d'avoir la liste des commandes attendu et envoyer par
+ le serveur central. Il répondra sur l'event &quot;info&quot;)</span></i><span style="font-family: Calibri, Arial, Helvetica, sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); display: inline !important;"></span>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Pour le reste, c'est comme lorsque vous utilisez Socket.io normalement, donc vous utilisez client.emit('...', []); pour envoyer des données et client.on('...', () =&gt; {...}); pour récupérer des données.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Voici un exemple d'un objet a envoyer au serveur central :</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+</p>
+<div style="margin: 0px; font-size: 14px; line-height: 19px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30);">
+<div style="margin: 0px">&nbsp;{</div>
+<div style="margin: 0px">&nbsp;nameService&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;Demo&quot;</span>,&nbsp;</div>
+<div style="margin: 0px">&nbsp;projects&nbsp;:&nbsp;[</div>
+<div style="margin: 0px">{&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;name&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;<span style="margin: 0px">projet</span>&nbsp;de&nbsp;test&quot;</span>,&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;desc&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;Description&nbsp;du&nbsp;<span style="margin: 0px">projet</span>,&nbsp;blablabla...&quot;</span>,&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;daysOff&nbsp;:&nbsp;{&nbsp;<span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">Mo&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">true</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;Tu&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">true</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;&nbsp;We&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">true</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;Th&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">true</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;Fr&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">true</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;Sa&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">false</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;Su&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(255, 0, 128); background-color: rgb(30, 30, 30);">false</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">&nbsp;},</span></div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;workingHours&nbsp;:&nbsp;{&nbsp;start&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(206, 103, 0);">moment</span>().<span style="margin: 0px; color: rgb(206, 103, 0);">hour</span>(),&nbsp;end&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(206, 103, 0);">moment</span>().<span style="margin: 0px; color: rgb(206, 103, 0);">hour</span>()&nbsp;},&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;task&nbsp;:&nbsp;[{&nbsp;id&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(96, 137, 180);">0</span>,&nbsp;name&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;tache&nbsp;1&quot;</span>,&nbsp;desc&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;toto&quot;</span>,&nbsp;<span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">start&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(96, 137, 180); background-color: rgb(30, 30, 30);">1491680626329</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;end&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(96, 137, 180); background-color: rgb(30, 30, 30);">1491684607029</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;percentageProgress&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(96, 137, 180); background-color: rgb(30, 30, 30);">50</span><span style="font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(197, 200, 198); background-color: rgb(30, 30, 30); display: inline !important;">,&nbsp;color&nbsp;&nbsp;:&nbsp;</span><span style="margin: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; color: rgb(154, 168, 58); background-color: rgb(30, 30, 30);">&quot;#fc0202&quot;,&nbsp;</span>linkedTask&nbsp;:&nbsp;[],&nbsp;ressources&nbsp;:&nbsp;[]&nbsp;}],&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;groupTask&nbsp;:&nbsp;[{&nbsp;name&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;optional&quot;</span>,&nbsp;start&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(199, 68, 74);">Date</span>.<span style="margin: 0px; color: rgb(206, 103, 0);">now</span>(),&nbsp;end&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(199, 68, 74);">Date</span>.<span style="margin: 0px; color: rgb(206, 103, 0);">now</span>()&nbsp;}],&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;resources&nbsp;:&nbsp;[{&nbsp;name&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;Jérémy&quot;</span>,&nbsp;cost&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(96, 137, 180);">500</span>,&nbsp;type&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;humain&quot;</span>&nbsp;}],&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;&nbsp;milestones&nbsp;:&nbsp;[{&nbsp;name&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(154, 168, 58);">&quot;jalon&nbsp;°1&quot;</span>,&nbsp;date&nbsp;:&nbsp;<span style="margin: 0px; color: rgb(199, 68, 74);">Date</span>.<span style="margin: 0px; color: rgb(206, 103, 0);">now</span>()&nbsp;}]&nbsp;</div>
+<div style="margin: 0px">&nbsp;&nbsp;}&nbsp;</div>
+<div style="margin: 0px">&nbsp;]&nbsp;</div>
+<div style="margin: 0px">};</div>
+</div>
+<br style="font-family: Calibri, Arial, Helvetica, sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; margin-top: 0px; margin-bottom: 0px; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+</p>
+<span style="font-family: Calibri, Arial, Helvetica, sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); display: inline !important;">Petite précision, pour le serveur central un &quot;Service&quot; représenté ici par la propriété &quot;nameService&quot; est
+ le nom de votre service / groupe. Il doit donc être unique par groupe et ne pas changer.</span><br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<div dir="ltr" style="margin: 0px; font-size: 12pt; font-family: Calibri, Arial, Helvetica, sans-serif; color: black; background-color: rgb(255, 255, 255);">
+Quelques infos sur les évents du central :</div>
+<div dir="ltr" style="margin: 0px; font-family: Calibri, Arial, Helvetica, sans-serif; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<ul style="margin-top: 0px; margin-bottom: 0px">
+<li><font face="Calibri,Arial,Helvetica,sans-serif"><span style="margin: 0px">needHelp (écouté par le central): Un évent&nbsp;supplémentaire prévu pour vous aider à utiliser les évents&nbsp;du central, il n'attend aucun paramètres&nbsp;et vous renvoi&nbsp;un string</span></font></li><li><font face="Calibri,Arial,Helvetica,sans-serif"><span style="margin: 0px"><span style="margin: 0px">sendUpdate (écouté par le central): Permet la création de votre &quot;service&quot; (c'est votre groupe, votre application, votre site quoi) ainsi que la MAJ des données
+ lié à votre service (donc les<span>&nbsp;</span><span style="margin: 0px">projet</span>s et les éléments lié a chaque<span>&nbsp;</span><span style="margin: 0px">projet</span><span>&nbsp;</span>aussi). Il attend en paramètre&nbsp;un objet (construit comme l'exemple ci-dessus)</span><br>
+</span></font></li><li><span style="margin: 0px">projectUpdated (emit par le central): Permet à votre serveur Node de recevoir un tableau d'objets, chaque objet est un service (comme l'exemple ci-dessus). Ce dernier est envoyé à toutes les socket connecté au central</span><br>
+</li><li><span style="margin: 0px"><span style="margin: 0px">errorOnProjectUpdate (emit par le central) : Est envoyé uniquement à la socket ayant tenté une modification de données, cet event ne contient qu'une seul paramètre de type string</span><br>
+</span></li><li><span style="margin: 0px"><span style="margin: 0px"><span style="margin: 0px">deleteService (écouter par le central): Permet de retirer votre service du central.</span><br>
+</span></span></li></ul>
+<p style="font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black;"></p>
+<p style="font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black;"><br>
+</p>
+<p style="font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black;"><br>
+</p>
+<p style="font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black;">Si vous n'arrivez pas à modifier votre objet json retourné par mongo, il faut &quot;transformer&quot; votre document mongo en &quot;pure&quot; objet json. Ex :</p>
+</div>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<div style="font-family: &quot;Droid Sans Mono&quot;, monospace, monospace, &quot;Droid Sans Fallback&quot;; font-weight: normal; font-size: 14px; line-height: 19px; color: rgb(212, 212, 212); background-color: rgb(30, 30, 30);">
+<div><span style="color: rgb(156, 220, 254);">monSchema</span><span>.</span><span style="color: rgb(220, 220, 170);">find</span><span>({&nbsp;</span><span style="color: rgb(156, 220, 254);">projet&nbsp;:</span><span>&nbsp;</span><span style="color: rgb(206, 145, 120);">'test'</span><span>&nbsp;},
+ (</span><span style="color: rgb(156, 220, 254);">error</span><span>, </span><span style="color: rgb(156, 220, 254);">docs</span><span>)
+</span><span style="color: rgb(86, 156, 214);">=&gt;</span><span>&nbsp;{</span></div>
+<div><span>&nbsp; </span><span style="color: rgb(197, 134, 192);">if</span><span>&nbsp;(</span><span style="color: rgb(156, 220, 254);">error</span><span>) {</span></div>
+<div><span>&nbsp; &nbsp;&nbsp;</span><span style="color: rgb(78, 201, 176);">console</span><span>.</span><span style="color: rgb(220, 220, 170);">log</span><span>(</span><span style="color: rgb(206, 145, 120);">'Erreur, il faut remplacer ce console.log par un traitement pour
+ avertir le front'</span><span>);</span></div>
+<div><span>&nbsp; }</span></div>
+<div><span>&nbsp; </span><span style="color: rgb(106, 153, 85);">// La methode .toObject() permet de transformer un document json en pure objet json</span></div>
+<div><span>&nbsp; </span><span style="color: rgb(156, 220, 254);">docs</span><span>&nbsp;= </span>
+<span style="color: rgb(156, 220, 254);">docs</span><span>.</span><span style="color: rgb(220, 220, 170);">toObject</span><span>();</span></div>
+<div><span>&nbsp; ...</span></div>
+<div><span>});</span></div>
+</div>
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black; background-color: rgb(255, 255, 255);">
+Autre conseil utiliser une librairie comme moment.js pour manipuler les dates. Ex : la date de début de la &quot;tache 1&quot; est un timestamp, je peux facilement formatter et extraire uniquement ce dont mon framework front à besoin avec moment.js.</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black; background-color: rgb(255, 255, 255);">
+Attention, il est possible d'avoir uniquement un chiffre et pas un nombre ou un timestamp, c'est à vous lorsque vous récupérez les données de formatter si possible correctement !</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black; background-color: rgb(255, 255, 255);">
+<br>
+</p>
+<p style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; margin-top: 0px; margin-bottom: 0px; color: black; background-color: rgb(255, 255, 255);">
+Dernier conseil, les données que vous allez recevoir du central, il faut les traiter avec la même &quot;méfiance&quot; que lorsqu'on récupère des données depuis une BDD NoSQL. En NoSQL on ne vérifie pas ce que l'on enregistre, c'est à la lecture qu'il faut être vigilent.
+ Ici avec le central, faite de même.</p>
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Il y aura deux niveau de notation, une pour le groupe et une individuelle.</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+La note du groupe sera la moyenne des note du groupe.</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Pour pouvoir noter individuellement, vous devez travailler sur le même repo, que je puisse voir qui a commit et push quoi.</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<u>Critères de notation :</u></div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<ul>
+<li>Respect des consignes&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =&gt;&nbsp; 10 pts</li><li>Le projet fonctionne comme attendu&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =&gt;&nbsp; 10 pts</li><li>(Bonus) Code soigné, efficace et bien commenté&nbsp; &nbsp; &nbsp; =&gt;&nbsp; 1 pt</li><li>(Bonus) Le projet est design (CSS)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =&gt;&nbsp; 1 pt</li><li>Utilisation de &quot;var&quot;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=&gt;&nbsp; -3 pts</li><li>Variable non déclaré&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =&gt;&nbsp; -3 pts</li><li>Le projet contient des bugs&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =&gt;&nbsp; - 2 pts&nbsp; / bug</li></ul>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Le projet sera à terminer pour le <span style="color: rgb(190, 91, 23);"><b style="color: rgb(190, 91, 23);"><u style="color: rgb(190, 91, 23);">Lundi 13/01/2020 12h</u></b></span> et une présentation de votre travail sera effectué au tableau le même jour,
+ l'après midi.</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+L'adresse IP du serveur central sera communiqué dans un mail ultérieur.</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+Bonne chance !</div>
+<div style="font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+<br>
+</div>
+</body>
+</html>
