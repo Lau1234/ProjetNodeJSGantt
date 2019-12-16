@@ -28,3 +28,14 @@ http.listen(port, () => {
 
   ServerEvent.emit("TEST");
 });
+
+//----------Connection au serveur central--------------//
+const socket = require('socket.io-client');
+let client = socket.connect('Adresse IP bientôt disponnible', {reconnect: true}); // L'adresse IP vous sera communiqué dans un mail ultérieur
+
+client.on('connect', () => {
+  console.log('connected')
+
+  client.emit('needHelp');
+});
+//-----------------------------------------------------//
