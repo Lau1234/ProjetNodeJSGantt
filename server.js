@@ -5,26 +5,22 @@ const app = express();
 const http = require("http").Server(app);
 const path = require("path");
 
+var cors = require("cors");
+
 const port = 3000;
 
-//const Gantt = require(path.join(__dirname, "Controller", "Gantt"));
+const Gantt = require(path.join(__dirname, "Controller", "Gantt"));
 
-//app.use("/gantt", Gantt.router);
+app.use(cors());
+
+app.use("/gantt", Gantt.router);
 
 require("./Controller/Mongoose");
-
-//Socket io
-require(path.join(__dirname, "Controller", "sockets")).listen(
-  http,
-  ServerEvent
-);
 
 app.use(express.static(path.join(__dirname, "Client")));
 
 http.listen(port, () => {
   console.log(`\nListening at 127.0.0.1:${port}`);
-
-  ServerEvent.emit("TEST");
 });
 
 //----------Connection au serveur central--------------//

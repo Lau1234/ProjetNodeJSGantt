@@ -1,3 +1,14 @@
+const url = "http://localhost:3000/gantt/";
+
+const defaultOptions = {
+  method: "GET",
+  headers: {
+    Accept: "application/json"
+  },
+  mode: "cors",
+  cache: "default"
+};
+
 gantt.config.xml_date = "%Y-%m-%d %H:%i";
 gantt.init("gantt_here");
 gantt.parse({
@@ -61,35 +72,67 @@ gantt.parse({
     { id: 3, source: 5, target: 6, type: "0" }
   ]
 });
+
+createGantt();
 getGantt();
+
 function getGantt() {
-  var url = "http://localhost:3000/gantt";
-
-  var options = {
-    method: "GET",
-    headers: {
-      Accept: "application/json"
-    },
-    mode: "cors",
-    cache: "default"
-    //   body: JSON.stringify({
-    //     "firstname": "Nic",
-    //     "lastname": "Raboy"
-    // })
-  };
-
-  // var request = new Request("", options);
-
-  // request.url = "localhost:3000/gantt";
-
-  // fetch(request).then(function(response, error) {
-  //   if (error) {
-  //     console.log("error:", error);
-  //   }
-  //   console.log(response);
-  // });
+  const options = { ...defaultOptions, method: "GET" };
 
   fetch(url, options)
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+    });
+}
+
+function createGantt() {
+  const fakeGantt = {
+    nameService: "Demo",
+    projects: [
+      {
+        name: "projet de test",
+        desc: "Description du projet, blablabla...",
+        daysOff: {
+          Mo: true,
+          Tu: true,
+          We: true,
+          Th: true,
+          Fr: true,
+          Sa: false,
+          Su: false
+        },
+        workingHours: {
+          start: 0 /*moment().hour()*/,
+          end: 0 /*moment().hour()*/
+        },
+        task: [
+          {
+            id: 0,
+            name: "tache 1",
+            desc: "toto",
+            start: 1491680626329,
+            end: 1491684607029,
+            percentageProgress: 50,
+            color: "#fc0202",
+            linkedTask: [],
+            ressources: []
+          }
+        ],
+        groupTask: [{ name: "optional", start: Date.now(), end: Date.now() }],
+        resources: [{ name: "Jérémy", cost: 500, type: "humain" }],
+        milestones: [{ name: "jalon °1", date: Date.now() }]
+      }
+    ]
+  };
+
+  const options = {
+    ...defaultOptions,
+    method: "POST",
+    body: JSON.stringify(fakeGantt)
+  };
+
+  fetch(url + "new", options)
     .then(response => response.json())
     .then(response => {
       console.log(response);
