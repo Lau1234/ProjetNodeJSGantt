@@ -7,11 +7,9 @@ const path = require("path");
 
 const port = 3000;
 
-const ServerEvent = require(path.join(__dirname, "Controller", "ServerEvent"));
+//const Gantt = require(path.join(__dirname, "Controller", "Gantt"));
 
-const Gantt = require(path.join(__dirname, "Controller", "Gantt"));
-
-app.use("/gantt", Gantt.router);
+//app.use("/gantt", Gantt.router);
 
 require("./Controller/Mongoose");
 
@@ -30,12 +28,14 @@ http.listen(port, () => {
 });
 
 //----------Connection au serveur central--------------//
-const socket = require('socket.io-client');
-let client = socket.connect('Adresse IP bientôt disponnible', {reconnect: true}); // L'adresse IP vous sera communiqué dans un mail ultérieur
+const socket = require("socket.io-client");
+let client = socket.connect("Adresse IP bientôt disponnible", {
+  reconnect: true
+}); // L'adresse IP vous sera communiqué dans un mail ultérieur
 
-client.on('connect', () => {
-  console.log('connected')
+client.on("connect", () => {
+  console.log("connected");
 
-  client.emit('needHelp');
+  client.emit("needHelp");
 });
 //-----------------------------------------------------//
