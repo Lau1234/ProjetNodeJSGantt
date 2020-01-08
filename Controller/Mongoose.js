@@ -30,14 +30,14 @@ const ganttSchema = new Schema({
       workingHours: { start: Number, end: Number },
       task: {type:[
         {
-          id: {type:Number, required:true},
+          //id: {type:Number, required:true},
           name: {type:String, required:true},
-          desc: String,
-          start: {type:Number, required:true},
-          end: {type:Number, required:true},
-          percentageProgress: Number,
-          color: String,
-          linkedTask: Array,
+          //desc: String,
+          //start: {type:Number, required:true},
+          //end: {type:Number, required:true},
+          //percentageProgress: Number,
+          //color: String,
+          //linkedTask: Array,
           ressources: Array
         }
       ], required:true},
@@ -48,5 +48,21 @@ const ganttSchema = new Schema({
   ]
 });
 //------------------------------------------------//
+
+ganttSchema.statics.addProject = async function(gantt){
+  var Gantt = new this(gantt);
+  var result = await Gantt.save(gantt);
+  return result;
+}
+
+ganttSchema.statics.listGantt = async function(){
+  return await this.find();
+}
+
+ganttSchema.statics.updateproject = async function(gantt){
+  var Gantt = new this(gantt);
+  var result = await Gantt.remove(gantt);
+  return result;
+}
 
 module.exports = mongoose.model("gantt", ganttSchema);
