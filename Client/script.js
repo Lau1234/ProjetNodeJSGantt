@@ -83,6 +83,14 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item) {
 
 //--------------------------------------
 
+gantt.attachEvent("onLightboxSave", function(id, task, is_new) {
+  //any custom logic here
+  var idTask = gantt.getTask(id);
+  console.log(idTask);
+  //var task =  gantt.getTask(gantt.getSelectedId());
+  console.log("test onLihtBoxSave " + task);
+  return true;
+});
 //Sauvegarde Gantt ---------------------
 function createGantt() {
   const gantt = {
@@ -124,7 +132,7 @@ function createGantt() {
     ]
   };
   socket.emit("createGantt", gantt);
-
+  console.log("Fonction createGantt + " + gantt);
   // const options = {
   //   ...defaultOptions,
   //   method: "POST",
