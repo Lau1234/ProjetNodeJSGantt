@@ -52,9 +52,9 @@ const ganttSchema = new Schema({
 //------------------------------------------------//
 
 ganttSchema.statics.addProject = async function(gantt) {
-  const Gantt = new this(gantt);
-  console.log("new Gantt:", Gantt);
-  return await Gantt.save(gantt);
+  const newGantt = new Gantt({ ...gantt });
+  console.log("new Gantt:", newGantt);
+  return await Gantt.save(newGantt);
 };
 
 ganttSchema.statics.listGantt = async function() {
