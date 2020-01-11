@@ -1,17 +1,23 @@
 "use strict";
 
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const http = require("http").Server(app);
 const path = require("path");
 
-const port = 3000;
-
 require("./Controller/Mongoose");
 
-//Socket io
-require(path.join(__dirname, "Controller", "sockets")).listen(http);
+var cors = require("cors");
 
+const port = 3000;
+
+const Gantt = require(path.join(__dirname, "Controller", "Gantt"));
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
+app.use("/gantt", Gantt.router);
 app.use(express.static(path.join(__dirname, "Client")));
 
 http.listen(port, () => {

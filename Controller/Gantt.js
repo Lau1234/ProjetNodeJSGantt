@@ -14,6 +14,7 @@ router.get("", (req, res) => {
 
 // CREATE gantt
 router.post("/new", (req, res) => {
+  console.log("req.body:", req.body);
   let gantt = Gantt.addProject(req.body);
 
   res.status(201).json({ response: gantt });
