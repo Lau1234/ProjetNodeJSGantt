@@ -37,8 +37,8 @@ const ganttSchema = new Schema({
             end: { type: Number, required: true },
             percentageProgress: Number,
             color: String,
-            linkedTask: Array,
-            ressources: Array //
+            linkedTask: [Number],
+            ressources: [{ name: String, cost: Number, type: { type: String } }] //
           }
         ],
         required: true
@@ -58,7 +58,7 @@ ganttSchema.statics.createGantt = async gantt => {
   });
 };
 
-ganttSchema.statics.getGantt = async (nameService = "AcquartGraça") => {
+ganttSchema.statics.getGantt = async function(nameService = "AcquartGraça") {
   return await this.find({ nameService: nameService });
 };
 

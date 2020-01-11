@@ -12,7 +12,7 @@ module.exports.listen = http => {
     socket.emit("connection", "connected");
 
     socket.on("createGantt", data => {
-      console.log("client data: ", data);
+     // console.log("client data: ", data);
 
       Gantt.createGantt(data).then((err, gantt) => {
         if (err) return console.error(err);
@@ -20,17 +20,17 @@ module.exports.listen = http => {
       });
     });
 
-    socket.on("getGantt", nameService => {
-      console.log("nameService: ", nameService);
+    socket.on("getGanttFromFront", nameService => {
+      console.log("GETgantFromFront: ", nameService);
 
-      Gantt.getGantt(nameService).then((err, gantt) => {
-        if (err) return console.error(err);
+      Gantt.getGantt(nameService).then((gantt, err) => {
+        if (err) return console.error('find error:', err);
         io.emit("getGantt", gantt);
       });
     });
 
     socket.on("updateGantt", (nameService, gantt) => {
-      console.log("nameService: ", nameService, "gantt: ", gantt);
+      //console.log("nameService: ", nameService, "gantt: ", gantt);
 
       Gantt.updateGantt(nameService, gantt).then((err, gantt) => {
         if (err) return console.error(err);
