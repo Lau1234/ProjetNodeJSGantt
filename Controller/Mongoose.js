@@ -51,25 +51,24 @@ const ganttSchema = new Schema({
 });
 //------------------------------------------------//
 
-ganttSchema.statics.createGantt = async function(gantt) {
+ganttSchema.statics.createGantt = async gantt => {
   const newGantt = new Gantt({ ...gantt });
-  return newGantt.save(function(err) {
-    if (err)
-      console.error(
-        "----------------------------ERROR-------------------------------",
-        err
-      );
-    // saved!
+  return newGantt.save(err => {
+    if (err) console.error(err);
   });
 };
 
-ganttSchema.statics.listGantt = async function() {
-  return await this.find();
+ganttSchema.statics.getGantt = async (nameService = "AcquartGraça") => {
+  return await this.find({ nameService: nameService });
 };
 
-ganttSchema.statics.updateproject = async function(gantt) {
-  const Gantt = new this(gantt);
-  return await Gantt.remove(gantt);
+ganttSchema.statics.updateGantt = async (
+  nameService = "AcquartGraça",
+  gantt
+) => {
+  return await Gantt.update({ nameService: nameService }, { ...gantt }, err => {
+    if (err) console.error(err);
+  });
 };
 
 const Gantt = mongoose.model("gantt", ganttSchema);
