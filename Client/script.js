@@ -83,16 +83,30 @@ gantt.attachEvent("onAfterTaskAdd", function(id, item) {
 
 //--------------------------------------
 
-gantt.attachEvent("onLightboxSave", function(id, task, is_new) {
-  //any custom logic here
-  var idTask = gantt.getTask(id);
-  console.log(idTask);
-  //var task =  gantt.getTask(gantt.getSelectedId());
-  console.log("test onLihtBoxSave " + task);
-  return true;
+// gantt.attachEvent("onLightboxSave", function(id, task, is_new) {
+//   //createGantt(idTask)
+//   console.log("GANT TEST", gantt);
+//   var tasks = gantt.serialize(); //where "tasks" is an array of tasks' objects or
+//   console.log(tasks)
+
+//   var tasks = gantt.getTaskByTime(); 
+//   console.log(tasks)
+//   //var task =  gantt.getTask(gantt.getSelectedId());
+//   console.log("test onLihtBoxSave " , task);
+//   return true;
+// });
+gantt.attachEvent("onAfterTaskUpdate", function(id,item){
+console.log("onAfterTaskUpdate")
 });
+// gantt.attachEvent("onAfterLinkAdd", function(id,item){
+//   console.log("onAfterLinkAdd")
+// });
+
+// gantt.attachEvent("onAfterLinkDelete", function(id,item){
+//   console.log("onAfterLinkDelete")
+// });
 //Sauvegarde Gantt ---------------------
-function createGantt() {
+function createGantt(gantttest) {
   const gantt = {
     nameService: "Demo",
     projects: [
