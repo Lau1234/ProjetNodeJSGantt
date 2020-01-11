@@ -9,7 +9,7 @@ gantt.init("gantt_here");
 socket.on("getGantt", data => {
   // gantt.parse
   console.log(data);
-})
+});
 gantt.parse({
   data: [
     {
@@ -72,6 +72,15 @@ gantt.parse({
   ]
 });
 
+socket.on("connection", data => {
+  console.log("data:", data);
+});
+
+gantt.attachEvent("onAfterTaskAdd", function(id, item) {
+  console.log("---------------");
+  createGantt();
+});
+
 //--------------------------------------
 
 //Sauvegarde Gantt ---------------------
@@ -114,7 +123,7 @@ function createGantt() {
       }
     ]
   };
-  socket.emit("createGantt", gantt)
+  socket.emit("createGantt", gantt);
 
   // const options = {
   //   ...defaultOptions,
@@ -135,7 +144,7 @@ function createGantt() {
 // dp.setTransactionMode("REST");
 
 createGantt();
-getGantt();
+// getGantt();
 
 // function getGantt() {
 //   const options = { ...defaultOptions, method: "GET" };
@@ -146,4 +155,3 @@ getGantt();
 //       console.log(response);
 //     });
 // }
-

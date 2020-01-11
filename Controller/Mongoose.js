@@ -44,7 +44,7 @@ const ganttSchema = new Schema({
         required: true
       },
       groupTask: [{ name: String, start: Number, end: Number }],
-      resources: [{ name: String, cost: Number, type: String }],
+      resources: [{ name: String, cost: Number, type: { type: String } }],
       milestones: [{ name: String, date: Number }]
     }
   ]
@@ -52,8 +52,15 @@ const ganttSchema = new Schema({
 //------------------------------------------------//
 
 ganttSchema.statics.createGantt = async function(gantt) {
-  console.log("gantt:", gantt);
-  return this.save(gantt);
+  const newGantt = new Gantt({ ...gantt });
+  return newGantt.save(function(err) {
+    if (err)
+      console.error(
+        "----------------------------ERROR-------------------------------",
+        err
+      );
+    // saved!
+  });
 };
 
 ganttSchema.statics.listGantt = async function() {
