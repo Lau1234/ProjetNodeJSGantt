@@ -1,16 +1,15 @@
 const url = "http://localhost:3000/gantt/";
+const socket = io();
 
-const defaultOptions = {
-  method: "GET",
-  headers: {
-    Accept: "application/json"
-  },
-  mode: "cors",
-  cache: "default"
-};
+// Affichage gantt --------------------
 
 gantt.config.xml_date = "%Y-%m-%d %H:%i";
+
 gantt.init("gantt_here");
+socket.on("getGantt", data => {
+  // gantt.parse
+  console.log(data);
+})
 gantt.parse({
   data: [
     {
@@ -73,21 +72,11 @@ gantt.parse({
   ]
 });
 
-createGantt();
-getGantt();
+//--------------------------------------
 
-function getGantt() {
-  const options = { ...defaultOptions, method: "GET" };
-
-  fetch(url, options)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-    });
-}
-
+//Sauvegarde Gantt ---------------------
 function createGantt() {
-  const fakeGantt = {
+  const gantt = {
     nameService: "Demo",
     projects: [
       {
@@ -125,16 +114,36 @@ function createGantt() {
       }
     ]
   };
+  socket.emit("createGantt", gantt)
 
-  const options = {
-    ...defaultOptions,
-    method: "POST",
-    body: JSON.stringify(fakeGantt)
-  };
+  // const options = {
+  //   ...defaultOptions,
+  //   method: "POST",
+  //   body: JSON.stringify(fakeGantt)
+  // };
 
-  fetch(url + "new", options)
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-    });
+  // fetch(url + "new", options)
+  //   .then(response => response.json())
+  //   .then(response => {
+  //     console.log(response);
+  //   });
 }
+//--------------------------------------
+// gantt.load("/data");
+// var dp = new gantt.dataProcessor("/data");
+// dp.init(gantt);
+// dp.setTransactionMode("REST");
+
+createGantt();
+getGantt();
+
+// function getGantt() {
+//   const options = { ...defaultOptions, method: "GET" };
+
+//   fetch(url, options)
+//     .then(response => response.json())
+//     .then(response => {
+//       console.log(response);
+//     });
+// }
+
