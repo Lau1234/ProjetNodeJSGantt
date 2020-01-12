@@ -9,20 +9,28 @@ let centralData = [];
 let apiGantt;
 
 // Configuration dhtmlxGantt -------------------------
-let opts = [
+let optsColor = [
   { key: "#ff0000", label: 'Rouge' },
   { key:"#0000ff", label: 'Bleu' },
   { key: "#00ff00", label: 'Vert' },
   { key: "#ffff00", label : 'Jaune'}
 ];
+let optsResources = [
+  { key: "Antoine", label: 'Antoine' },
+  { key:"Laura", label: 'Laura' }
+  ];
 gantt.config.lightbox.sections = [
   {name:"name",height:38, map_to:"name", type:"textarea", focus:true },
   {name:"description", height:38, map_to:"text", type:"textarea"},
   {name:"time", height:38, map_to:"auto", type:"duration"},
-  {name : "color", height: 50, map_to:"color", type:"select", options:opts}
+  {name : "color", height: 50, map_to:"color", type:"select", options:optsColor},
+  {name : "resources", height: 50, map_to:"resource", type:"checkbox", options:optsResources}
+
 ];
 gantt.locale.labels.section_name="Name";
 gantt.locale.labels.section_color="Picker Color";
+gantt.locale.labels.section_resources="Assigned to";
+
 
 gantt.config.columns = [
   {name:"name",       label:"Task name",  width:"*", tree:true },
@@ -152,7 +160,7 @@ function frontToBack(frontGantt) {
 
 //    Update et envoie des nouvelles taches au Back
 function updateGantt() {
-console.log(gantt.serialize());
+console.log("SERIALIZE ",gantt.serialize());
   frontToBack(gantt.serialize());
   socket.emit("updateGanttToBack", apiGantt.nameService, apiGantt);
   socket.on("updateGanttToFront", data => {
