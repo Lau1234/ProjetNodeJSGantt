@@ -13,6 +13,7 @@ let apiGantt;
 socket.on("connection", data => {
   console.log("data:", data);
   centralData = data;
+  generateMenu();
 });
 // --------------------------------------
 
@@ -24,7 +25,7 @@ socket.emit("getGanttFromFront");
 socket.on("getGantt", (dataReceived, err) => {
   if (err) console.log("getGantt error:", err);
   apiGantt = dataReceived;
-  gantt.parse(backToFront(apiGantt));
+  gantt.parse(backToFront());
 });
 // ------------------------------------
 
@@ -42,9 +43,21 @@ gantt.attachEvent("onAfterTaskDelete", () => {
 
 // Fonctions------------------------------------------------------------
 
+// Génere le menu en fonction des Gantt récupérés du central
+
+function generateMenu() {
+  let ul = document.getElementById("gantt_list");
+  ul.innerHTML = "";
+  centralData.forEach(service => {
+    li = document.createElement("li");
+    ul.appendChild(li);
+    li.innerHTML = service.nameService;
+  });
+}
+
 //    Convertion des données venant du Back pour envoyer au Front
 
-function backToFront(apiGantt) {
+function backToFront() {
   const frontGantt = { gantt: { data: [] } };
 
   apiGantt.projects[0].task.forEach((task, index) => {

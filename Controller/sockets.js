@@ -20,8 +20,9 @@ module.exports.listen = http => {
     client.on("connect", () => {
       console.log("connected");
 
-      client.emit("sendUpdate");
+      client.emit("sendUpdate", {});
       client.on("projectUpdated", data => {
+        console.log("central data:", data);
         socket.emit("connection", data);
       });
       client.on("errorOnProjectUpdate", data => {
