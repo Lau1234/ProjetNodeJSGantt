@@ -25,7 +25,6 @@ socket.emit("getGanttFromFront");
 socket.on("getGantt", (dataReceived, err) => {
   if (err) console.log("getGantt error:", err);
   apiGantt = dataReceived;
-  gantt.parse(backToFront());
 });
 // ------------------------------------
 
@@ -52,15 +51,25 @@ function generateMenu() {
     li = document.createElement("li");
     ul.appendChild(li);
     li.innerHTML = service.nameService;
+    li.setAttribute("onclick", `loadGantt(${service.nameService})`);
   });
+}
+
+// Charge le gantt entré en paramètre
+
+function loadGantt(ganttService) {
+  const ganttToLoad = centralData.find(
+    data => data.nameService === ganttService
+  );
+  gantt.parse(backToFront(ganttToLoad));
 }
 
 //    Convertion des données venant du Back pour envoyer au Front
 
-function backToFront() {
+function backToFront(backGantt) {
   const frontGantt = { gantt: { data: [] } };
 
-  apiGantt.projects[0].task.forEach((task, index) => {
+  backGantt.projects[0].task.forEach((task, index) => {
     frontGantt.gantt.data.push({
       id: task.id,
       text: task.name,
