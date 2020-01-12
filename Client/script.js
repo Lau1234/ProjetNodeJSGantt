@@ -10,51 +10,65 @@ let apiGantt;
 
 // Configuration dhtmlxGantt -------------------------
 let optsColor = [
-  { key: "#ff0000", label: 'Rouge' },
-  { key:"#0000ff", label: 'Bleu' },
-  { key: "#00ff00", label: 'Vert' },
-  { key: "#ffff00", label : 'Jaune'}
+  { key: "#ff0000", label: "Rouge" },
+  { key: "#0000ff", label: "Bleu" },
+  { key: "#00ff00", label: "Vert" },
+  { key: "#ff9900", label: "Jaune" }
 ];
 let optsResources = [
-  { key: "Antoine", label: 'Antoine' },
-  { key:"Laura", label: 'Laura' }
-  ];
-gantt.config.lightbox.sections = [
-  {name:"name",height:38, map_to:"name", type:"textarea", focus:true },
-  {name:"description", height:38, map_to:"text", type:"textarea"},
-  {name:"time", height:38, map_to:"auto", type:"duration"},
-  {name : "color", height: 50, map_to:"color", type:"select", options:optsColor},
-  {name : "resources", height: 50, map_to:"resource", type:"checkbox", options:optsResources}
-
+  { key: "Antoine", label: "Antoine" },
+  { key: "Laura", label: "Laura" }
 ];
-gantt.locale.labels.section_name="Name";
-gantt.locale.labels.section_color="Picker Color";
-gantt.locale.labels.section_resources="Assigned to";
+//Config lightBox
+gantt.config.lightbox.sections = [
+  { name: "name", height: 38, map_to: "name", type: "textarea", focus: true },
+  { name: "description", height: 38, map_to: "text", type: "textarea" },
+  { name: "time", height: 38, map_to: "auto", type: "duration" },
+  {
+    name: "color",
+    height: 50,
+    map_to: "color",
+    type: "select",
+    options: optsColor
+  },
+  {
+    name: "ressources",
+    height: 50,
+    map_to: "ressources",
+    type: "checkbox",
+    options: optsResources
+  }
+];
+//Config label lightBox
+gantt.locale.labels.section_name = "Name";
+gantt.locale.labels.section_color = "Picker Color";
+gantt.locale.labels.section_ressources = "Assigned to";
 
-
+//Config column gantt
 gantt.config.columns = [
   { name: "name", label: "Task name", width: "*", tree: true },
   { name: "start_date", label: "Start time", align: "center" },
   { name: "duration", label: "Duration", align: "center" },
   { name: "add", label: "", width: 44 }
 ];
+//Config label task
 gantt.templates.task_text = function(start, end, task) {
   return task.name;
 };
 
 //-----------------------------------------------------
+
+//Génération du menu ---------------------------
 generateMenu();
 
 socket.emit("getGanttFromFront");
 socket.on("getGantt", async (dataReceived, err) => {
   if (err) console.log("getGantt error:", err);
-  console.log("dataReceived:", dataReceived);
   apiGantt = dataReceived;
 });
 
 // Initialisation de la connexion --------------------
 socket.on("connection", data => {
-  console.log("data:", data);
   centralData = data;
   generateMenu();
 });
@@ -77,43 +91,50 @@ gantt.attachEvent("onAfterTaskDelete", () => {
 // Génere le menu en fonction des Gantt récupérés du central
 
 function generateMenu() {
-  let ul = document.getElementById("gantt_list");
-  ul.innerHTML = "";
-  li = document.createElement("li");
-  ul.appendChild(li);
-  li.innerHTML = "AcquartGraça";
-  li.setAttribute("onclick", `loadGantt(\"AcquartGraça\")`);
+  let select = document.getElementById("gantt_list");
+  select.innerHTML = "";
+  select.setAttribute("onchange", `loadGantt()`);
+  let option = document.createElement("option");
+  select.appendChild(option);
+  option.innerHTML = "Choisir un service";
+  option.setAttribute("value", "");
+  option = document.createElement("option");
+  select.appendChild(option);
+  option.innerHTML = "AcquartGraça";
+  option.setAttribute("value", "AcquartGraça");
   centralData.forEach(service => {
     if (service.nameService !== "AcquartGraça") {
-      li = document.createElement("li");
-      ul.appendChild(li);
-      li.innerHTML = service.nameService;
-      li.setAttribute("onclick", `loadGantt(\"${service.nameService}\")`);
+      option = document.createElement("option");
+      select.appendChild(option);
+      option.innerHTML = service.nameService;
+      option.setAttribute("value", `${service.nameService}`);
     }
   });
 }
 
-// Charge le gantt entré en paramètre
+// Charge le gantt selectionné
 
-function loadGantt(ganttService) {
-  document.getElementById("gantt").innerHTML =
-    '<div id="gantt_here" style="width:100%; height:100%;"></div>';
+function loadGantt() {
+  const ganttService = document.getElementById("gantt_list").value;
+  if (ganttService) {
+    document.getElementById("gantt").innerHTML =
+      '<div id="gantt_here" style="width:100%; height:100%;"></div>';
 
-  gantt.init("gantt_here");
+    gantt.init("gantt_here");
 
-  let ganttToLoad;
+    let ganttToLoad;
 
-  if (ganttService === "AcquartGraça") {
-    gantt.config.readonly = false;
-    ganttToLoad = apiGantt;
-  } else {
-    gantt.config.readonly = true;
-    ganttToLoad = centralData.find(data => data.nameService === ganttService);
+    if (ganttService === "AcquartGraça") {
+      gantt.config.readonly = false;
+      ganttToLoad = apiGantt;
+    } else {
+      gantt.config.readonly = true;
+      ganttToLoad = centralData.find(data => data.nameService === ganttService);
+    }
+
+    gantt.clearAll();
+    gantt.parse(backToFront(ganttToLoad));
   }
-
-  console.log("ganttToLoad:", ganttToLoad);
-
-  gantt.parse(backToFront(ganttToLoad));
 }
 
 //    Convertion des données venant du Back pour envoyer au Front
@@ -130,12 +151,28 @@ function backToFront(backGantt) {
         start_date: moment.unix(task.start).format("YYYY-MM-DD"),
         end_date: moment.unix(task.end).format("YYYY-MM-DD"),
         duration: Math.floor((task.end - task.start) / 60 / 60 / 24),
-        parent: task.linkedTask[0],
+        parent: task.linkedTask[0] !== 0 ? task.linkedTask[0] + 1 : 0,
         progress: task.percentageProgress / 100
       });
+      if (task.linkedTask[0] !== 0) {
+        task.linkedTask[0] = task.linkedTask[0] + 1;
+        let parentIndex = frontGantt.gantt.data.findIndex(
+          value => value.id === task.linkedTask[0]
+        );
+        if (parentIndex !== -1) {
+          frontGantt.gantt.data[parentIndex].open = true;
+        }
+      }
       if (task.color) {
         frontGantt.gantt.data[index].color = task.color;
       }
+      // task.ressources.forEach(ressource => {
+      //   frontGantt.gantt.data[index].ressources.push({
+      //     name: ressource.name,
+      //     cost: ressource.cost,
+      //     type: ressource.type
+      //   });
+      // });
     });
   }
   return frontGantt.gantt;
@@ -153,26 +190,25 @@ function frontToBack(frontGantt) {
       end: parseInt(moment(taskFront.end_date).format("X")),
       percentageProgress: taskFront.progress * 100,
       color: taskFront.color,
-      linkedTask: parseInt([taskFront.parent]),
+      linkedTask: [parseInt(taskFront.parent)],
       ressources: []
     });
-    taskFront.ressources.forEach(ressource => {
-      apiGantt.projects[0].task[index].ressources.push({
-        name: ressource.name,
-        cost: ressource.cost,
-        type: ressource.type
-      });
-    });
+    // taskFront.ressources.forEach(ressource => {
+    //   apiGantt.projects[0].task[index].ressources.push({
+    //     name: ressource.name,
+    //     cost: ressource.cost,
+    //     type: ressource.type
+    //   });
+    // });
   });
 }
 
 //    Update et envoie des nouvelles taches au Back
 function updateGantt() {
-console.log("SERIALIZE ",gantt.serialize());
   frontToBack(gantt.serialize());
   socket.emit("updateGanttToBack", apiGantt.nameService, apiGantt);
-  socket.on("updateGanttToFront", data => {
-    console.log("DATA UPDATED : ", data);
-  });
+  // socket.on("updateGanttToFront", data => {
+  //   console.log("DATA UPDATED : ", data);
+  // });
 }
 //-----------------------------------------------------------------------

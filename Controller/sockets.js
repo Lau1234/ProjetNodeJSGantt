@@ -58,6 +58,7 @@ module.exports.listen = http => {
 };
 // ---------------------------------------------------
 
+// Map entre données de mongo sur le serveur central -------------------
 function mongoToCentral(gantt) {
   const central = {
     nameService: gantt.nameService,
@@ -99,9 +100,10 @@ function mongoToCentral(gantt) {
         ressources: []
       };
       if (task.linkedTask[0])
-        central.projects[index].task[index2] = task.linkedTask[0];
+        central.projects[index].task[index2].linkedTask[0] = task.linkedTask[0];
     });
   });
 
   return central;
 }
+//-----------------------------------------------
