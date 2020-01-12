@@ -33,12 +33,12 @@ gantt.locale.labels.section_resources="Assigned to";
 
 
 gantt.config.columns = [
-  {name:"name",       label:"Task name",  width:"*", tree:true },
-  {name:"start_date", label:"Start time", align:"center" },
-  {name:"duration",   label:"Duration",   align:"center" },
-  {name:"add",        label:"",           width:44 }
+  { name: "name", label: "Task name", width: "*", tree: true },
+  { name: "start_date", label: "Start time", align: "center" },
+  { name: "duration", label: "Duration", align: "center" },
+  { name: "add", label: "", width: 44 }
 ];
-gantt.templates.task_text=function(start,end,task){
+gantt.templates.task_text = function(start, end, task) {
   return task.name;
 };
 
@@ -120,30 +120,31 @@ function loadGantt(ganttService) {
 
 function backToFront(backGantt) {
   const frontGantt = { gantt: { data: [] } };
-
-  backGantt.projects[0].task.forEach((task, index) => {
-    task.id = task.id + 1;
-    frontGantt.gantt.data.push({
-      id: task.id,
-      name: task.name,
-      text: task.desc,
-      start_date: moment.unix(task.start).format("YYYY-MM-DD"),
-      end_date: moment.unix(task.end).format("YYYY-MM-DD"),
-      duration: Math.floor((task.end - task.start) / 60 / 60 / 24),
-      parent: task.linkedTask[0],
-      progress: task.percentageProgress / 100
+  if (backGantt.projects.length > 0) {
+    backGantt.projects[0].task.forEach((task, index) => {
+      task.id = task.id + 1;
+      frontGantt.gantt.data.push({
+        id: task.id,
+        name: task.name,
+        text: task.desc,
+        start_date: moment.unix(task.start).format("YYYY-MM-DD"),
+        end_date: moment.unix(task.end).format("YYYY-MM-DD"),
+        duration: Math.floor((task.end - task.start) / 60 / 60 / 24),
+        parent: task.linkedTask[0],
+        progress: task.percentageProgress / 100
+      });
+      if (task.color) {
+        frontGantt.gantt.data[index].color = task.color;
+      }
     });
-    if (task.color) {
-      frontGantt.gantt.data[index].color = task.color;
-    }
-  });
+  }
   return frontGantt.gantt;
 }
 
 //      Convertion des données venant du Front pour envoyer au Back
 function frontToBack(frontGantt) {
   apiGantt.projects[0].task = [];
-  frontGantt.data.forEach(taskFront => {
+  frontGantt.data.forEach((taskFront, index) => {
     apiGantt.projects[0].task.push({
       id: taskFront.id,
       name: taskFront.name,
@@ -155,6 +156,13 @@ function frontToBack(frontGantt) {
       linkedTask: parseInt([taskFront.parent]),
       ressources: []
     });
+    taskFront.ressources.forEach(ressource => {
+      apiGantt.projects[0].task[index].ressources.push({
+        name: ressource.name,
+        cost: ressource.cost,
+        type: ressource.type
+      });
+    });
   });
 }
 
@@ -164,7 +172,7 @@ console.log("SERIALIZE ",gantt.serialize());
   frontToBack(gantt.serialize());
   socket.emit("updateGanttToBack", apiGantt.nameService, apiGantt);
   socket.on("updateGanttToFront", data => {
-    console.log("DATA UPDATED : ",data);
+    console.log("DATA UPDATED : ", data);
   });
 }
 //-----------------------------------------------------------------------
