@@ -20,7 +20,6 @@ module.exports.listen = http => {
     client.on("connect", () => {
       console.log("connected");
 
-      client.emit("sendUpdate", {});
       client.on("projectUpdated", data => {
         console.log("central data:", data);
         socket.emit("connection", data);
@@ -43,7 +42,6 @@ module.exports.listen = http => {
     socket.on("getGanttFromFront", (nameService = "AcquartGraça") => {
       Gantt.getGantt(nameService).then((res, err) => {
         if (err) return console.error("find error:", err);
-        console.log("GET TO FRONT", res);
         io.emit("getGantt", res);
       });
     });
@@ -51,7 +49,9 @@ module.exports.listen = http => {
     socket.on("updateGanttToBack", (nameService, gantt) => {
       Gantt.updateGantt(nameService, gantt).then(err => {
         if (err) return console.error(err);
-        client.emit("sendUpdate", gantt);
+        client.on("connect", () => {
+          client.emit("sendUpdate", gantt);
+        });
         io.emit("updateGanttToFront", "gantt updated");
         console.log("UPDATE");
       });
