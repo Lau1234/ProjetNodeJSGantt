@@ -9,7 +9,29 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function() {});
 //------------------------------------------------------//
 const Schema = mongoose.Schema;
-
+const emptyProject = {
+  nameService: "AcquartGraça",
+  projects: [
+    {
+      name: "New Project",
+      desc: "This is a new project",
+      daysOff: {
+        Mo: false,
+        Tu: false,
+        We: false,
+        Th: false,
+        Fr: false,
+        Sa: true,
+        Su: true
+      },
+      workingHours: { start: 0, end: 0 },
+      task: [],
+      groupTask: [],
+      resources: [],
+      milestones: []
+    }
+  ]
+};
 //-----------Schema de notre objet Gantt------------//
 const ganttSchema = new Schema({
   nameService: String,
@@ -51,9 +73,6 @@ const ganttSchema = new Schema({
 });
 //------------------------------------------------//
 
-//-----------Modèle de notre objet Gantt------------//
-const Gantt = mongoose.model("gantt", ganttSchema);
-
 // Création d'un projet ---------------------------
 ganttSchema.statics.createGantt = async gantt => {
   const newGantt = new Gantt({ ...gantt });
@@ -71,6 +90,17 @@ ganttSchema.statics.getGantt = async function(nameService = "AcquartGraça") {
     async (err, docs) => {
       if (err) {
         console.log(err);
+        const newGantt = new Gantt({ ...emptyProject });
+        newGantt.save(err => {
+          if (err) console.log(err);
+        });
+        return await Gantt.findOne(
+          { nameService: nameService },
+          async (err, docs) => {
+            if (err) console.log(err);
+            return await docs.toObject();
+          }
+        );
       }
       return await docs.toObject();
     }
@@ -83,7 +113,6 @@ ganttSchema.statics.updateGantt = async function(
   nameService = "AcquartGraça",
   gantt
 ) {
-  console.log("TOupdate");
   return await Gantt.updateOne(
     { nameService: nameService },
     { ...gantt },
@@ -95,6 +124,9 @@ ganttSchema.statics.updateGantt = async function(
   );
 };
 //-----------------------------------------------------
+
+//-----------Modèle de notre objet Gantt------------//
+const Gantt = mongoose.model("gantt", ganttSchema);
 
 // Export du schéma
 module.exports = { Gantt };

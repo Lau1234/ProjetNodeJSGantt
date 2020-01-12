@@ -19,20 +19,20 @@ http.listen(port, () => {
 });
 
 //----------Connection au serveur central--------------//
-const socket = require("socket.io-client");
-let client = socket.connect("http://51.15.137.122:18000/", {
-  reconnect: true
-}); // L'adresse IP vous sera communiqué dans un mail ultérieur
+// const socket = require("socket.io-client");
+// let client = socket.connect("http://51.15.137.122:18000/", {
+//   reconnect: true
+// });
 
-client.on("connect", () => {
-  console.log("connected");
+// client.on("connect", () => {
+//   console.log("connected");
 
-  //   client.emit("sendUpdate", gantt);
-  //   client.on("projectUpdated", data => {
-  //     console.log(data);
-  //   });
-  //   client.on("errorOnProjectUpdate", data => {
-  //     console.log(data);
-  //   });
-});
+//   client.emit("sendUpdate");
+//   client.on("projectUpdated", data => {
+//     console.log(data);
+//   });
+//   client.on("errorOnProjectUpdate", data => {
+//     console.log(data);
+//   });
+// });
 //-----------------------------------------------------//

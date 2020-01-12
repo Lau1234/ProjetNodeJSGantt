@@ -1,19 +1,20 @@
 const url = "http://localhost:3000/gantt/";
 const socket = io();
 
-// Réglages dhtmlxGantt
+// Réglages dhtmlxGantt --------------------
 gantt.config.xml_date = "%Y-%m-%d";
 gantt.config.drag_links = false;
 // --------------------------------------
 
-// Initialisation de la connexion
+let centralData = [];
+let apiGantt;
+
+// Initialisation de la connexion --------------------
 socket.on("connection", data => {
   console.log("data:", data);
+  centralData = data;
 });
 // --------------------------------------
-
-let apiGantt;
-let DataFromBack;
 
 // Affichage gantt --------------------
 
