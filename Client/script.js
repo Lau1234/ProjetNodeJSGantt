@@ -8,11 +8,33 @@ gantt.config.drag_links = false;
 let centralData = [];
 let apiGantt;
 
-// gantt.config.lightbox.sections = [
-//   {name:"description", height:38, map_to:"text", type:"textarea", focus:true},
-//   {name:"time", height:38, map_to:"auto", type:"duration"}//,
-//   {name:"name",height:38, map_to:"text", type:"textarea" }
-// ];
+// Configuration dhtmlxGantt -------------------------
+let opts = [
+  { key: "#ff0000", label: 'Rouge' },
+  { key:"#0000ff", label: 'Bleu' },
+  { key: "#00ff00", label: 'Vert' },
+  { key: "#ffff00", label : 'Jaune'}
+];
+gantt.config.lightbox.sections = [
+  {name:"name",height:38, map_to:"name", type:"textarea", focus:true },
+  {name:"description", height:38, map_to:"text", type:"textarea"},
+  {name:"time", height:38, map_to:"auto", type:"duration"},
+  {name : "color", height: 50, map_to:"color", type:"select", options:opts}
+];
+gantt.locale.labels.section_name="Name";
+gantt.locale.labels.section_color="Picker Color";
+
+gantt.config.columns = [
+  {name:"name",       label:"Task name",  width:"*", tree:true },
+  {name:"start_date", label:"Start time", align:"center" },
+  {name:"duration",   label:"Duration",   align:"center" },
+  {name:"add",        label:"",           width:44 }
+];
+gantt.templates.task_text=function(start,end,task){
+  return task.name;
+};
+
+//-----------------------------------------------------
 generateMenu();
 
 socket.emit("getGanttFromFront");
@@ -92,7 +114,8 @@ function backToFront(backGantt) {
   backGantt.projects[0].task.forEach((task, index) => {
     frontGantt.gantt.data.push({
       id: task.id,
-      text: task.name,
+      name: task.name,
+      text: task.desc,
       start_date: moment.unix(task.start).format("YYYY-MM-DD"),
       end_date: moment.unix(task.end).format("YYYY-MM-DD"),
       duration: Math.floor((task.end - task.start) / 60 / 60 / 24),
@@ -112,7 +135,7 @@ function frontToBack(frontGantt) {
   frontGantt.data.forEach(taskFront => {
     apiGantt.projects[0].task.push({
       id: taskFront.id,
-      name: taskFront.text,
+      name: taskFront.name,
       desc: taskFront.text,
       start: parseInt(moment(taskFront.start_date).format("X")),
       end: parseInt(moment(taskFront.end_date).format("X")),
@@ -126,10 +149,11 @@ function frontToBack(frontGantt) {
 
 //    Update et envoie des nouvelles taches au Back
 function updateGantt() {
+console.log(gantt.serialize());
   frontToBack(gantt.serialize());
   socket.emit("updateGanttToBack", apiGantt.nameService, apiGantt);
   socket.on("updateGanttToFront", data => {
-    console.log(data);
+    console.log("DATA UPDATED : ",data);
   });
 }
 //-----------------------------------------------------------------------
