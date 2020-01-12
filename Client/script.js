@@ -24,7 +24,7 @@ socket.emit("getGanttFromFront");
 socket.on("getGantt", (dataReceived, err) => {
   if (err) console.log("getGantt error:", err);
   apiGantt = dataReceived;
-  gantt.parse(backToFront(apiGantt));
+  gantt.parse(backToFront());
 });
 // ------------------------------------
 
@@ -44,7 +44,7 @@ gantt.attachEvent("onAfterTaskDelete", () => {
 
 //    Convertion des données venant du Back pour envoyer au Front
 
-function backToFront(apiGantt) {
+function backToFront() {
   const frontGantt = { gantt: { data: [] } };
 
   apiGantt.projects[0].task.forEach((task, index) => {

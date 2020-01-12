@@ -90,17 +90,21 @@ ganttSchema.statics.getGantt = async function(nameService = "AcquartGraça") {
     async (err, docs) => {
       if (err) {
         console.log(err);
+      }
+      if(docs === null){      
         const newGantt = new Gantt({ ...emptyProject });
-        newGantt.save(err => {
-          if (err) console.log(err);
+        await newGantt.save(err => {
+          if (err) console.log("ERROR 2 :" ,err);
+          console.log("create empty project")
         });
         return await Gantt.findOne(
           { nameService: nameService },
-          async (err, docs) => {
+          async (err, newdocs) => {
             if (err) console.log(err);
-            return await docs.toObject();
-          }
-        );
+            console.log("new docs : ", newdocs)
+            return await newdocs.toObject();
+            }
+        )         
       }
       return await docs.toObject();
     }

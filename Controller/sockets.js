@@ -42,7 +42,7 @@ module.exports.listen = http => {
     socket.on("getGanttFromFront", (nameService = "AcquartGraça") => {
       Gantt.getGantt(nameService).then((res, err) => {
         if (err) return console.error("find error:", err);
-        console.log("GET");
+        console.log("GET TO FRONT",res);
         io.emit("getGantt", res);
       });
     });
