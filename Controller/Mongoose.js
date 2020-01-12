@@ -13,8 +13,8 @@ const emptyProject = {
   nameService: "AcquartGraça",
   projects: [
     {
-      name: "New Project",
-      desc: "This is a new project",
+      name: "TheOne",
+      desc: "Parceque c'est notre projet",
       daysOff: {
         Mo: false,
         Tu: false,
@@ -84,7 +84,6 @@ ganttSchema.statics.createGantt = async gantt => {
 
 // Récupération du gantt dans la base de données -----------
 ganttSchema.statics.getGantt = async function(nameService = "AcquartGraça") {
-  console.log("nameService:", nameService);
   return await Gantt.findOne(
     { nameService: nameService },
     async (err, docs) => {

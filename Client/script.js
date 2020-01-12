@@ -49,10 +49,12 @@ function generateMenu() {
   li.innerHTML = "AcquartGraça";
   li.setAttribute("onclick", `loadGantt(\"AcquartGraça\")`);
   centralData.forEach(service => {
-    li = document.createElement("li");
-    ul.appendChild(li);
-    li.innerHTML = service.nameService;
-    li.setAttribute("onclick", `loadGantt(${service.nameService})`);
+    if (service.nameService !== "AcquartGraça") {
+      li = document.createElement("li");
+      ul.appendChild(li);
+      li.innerHTML = service.nameService;
+      li.setAttribute("onclick", `loadGantt(\"${service.nameService}\")`);
+    }
   });
 }
 
@@ -85,6 +87,7 @@ function backToFront(backGantt) {
   const frontGantt = { gantt: { data: [] } };
 
   backGantt.projects[0].task.forEach((task, index) => {
+    task.id = task.id + 1;
     frontGantt.gantt.data.push({
       id: task.id,
       text: task.name,
