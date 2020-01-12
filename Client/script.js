@@ -1,4 +1,3 @@
-const url = "http://localhost:3000/gantt/";
 const socket = io();
 
 // Réglages dhtmlxGantt --------------------
@@ -9,6 +8,15 @@ gantt.config.drag_links = false;
 let centralData = [];
 let apiGantt;
 
+generateMenu();
+
+socket.emit("getGanttFromFront");
+socket.on("getGantt", async (dataReceived, err) => {
+  if (err) console.log("getGantt error:", err);
+  console.log("dataReceived:", dataReceived);
+  apiGantt = dataReceived;
+});
+
 // Initialisation de la connexion --------------------
 socket.on("connection", data => {
   console.log("data:", data);
@@ -16,17 +24,6 @@ socket.on("connection", data => {
   generateMenu();
 });
 // --------------------------------------
-
-// Affichage gantt --------------------
-
-gantt.init("gantt_here");
-
-socket.emit("getGanttFromFront");
-socket.on("getGantt", (dataReceived, err) => {
-  if (err) console.log("getGantt error:", err);
-  apiGantt = dataReceived;
-});
-// ------------------------------------
 
 // Event Modification/Supression/Creation
 gantt.attachEvent("onAfterTaskAdd", () => {
@@ -47,6 +44,10 @@ gantt.attachEvent("onAfterTaskDelete", () => {
 function generateMenu() {
   let ul = document.getElementById("gantt_list");
   ul.innerHTML = "";
+  li = document.createElement("li");
+  ul.appendChild(li);
+  li.innerHTML = "AcquartGraça";
+  li.setAttribute("onclick", `loadGantt(\"AcquartGraça\")`);
   centralData.forEach(service => {
     li = document.createElement("li");
     ul.appendChild(li);
@@ -58,9 +59,23 @@ function generateMenu() {
 // Charge le gantt entré en paramètre
 
 function loadGantt(ganttService) {
-  const ganttToLoad = centralData.find(
-    data => data.nameService === ganttService
-  );
+  document.getElementById("gantt").innerHTML =
+    '<div id="gantt_here" style="width:100%; height:100%;"></div>';
+
+  gantt.init("gantt_here");
+
+  let ganttToLoad;
+
+  if (ganttService === "AcquartGraça") {
+    gantt.config.readonly = false;
+    ganttToLoad = apiGantt;
+  } else {
+    gantt.config.readonly = true;
+    ganttToLoad = centralData.find(data => data.nameService === ganttService);
+  }
+
+  console.log("ganttToLoad:", ganttToLoad);
+
   gantt.parse(backToFront(ganttToLoad));
 }
 
@@ -108,7 +123,6 @@ function frontToBack(frontGantt) {
 function updateGantt() {
   frontToBack(gantt.serialize());
   socket.emit("updateGanttToBack", apiGantt.nameService, apiGantt);
-  console.log("UpdateTask");
   socket.on("updateGanttToFront", data => {
     console.log(data);
   });
