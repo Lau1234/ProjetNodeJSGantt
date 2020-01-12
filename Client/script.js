@@ -9,6 +9,12 @@ gantt.config.drag_links = false;
 let centralData = [];
 let apiGantt;
 
+// gantt.config.lightbox.sections = [
+//   {name:"description", height:38, map_to:"text", type:"textarea", focus:true},
+//   {name:"time", height:38, map_to:"auto", type:"duration"}//,
+//   {name:"name",height:38, map_to:"text", type:"textarea" }
+// ];
+
 // Initialisation de la connexion --------------------
 socket.on("connection", data => {
   console.log("data:", data);
