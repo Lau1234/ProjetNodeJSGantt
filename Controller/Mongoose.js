@@ -51,26 +51,51 @@ const ganttSchema = new Schema({
 });
 //------------------------------------------------//
 
+//-----------Modèle de notre objet Gantt------------//
+const Gantt = mongoose.model("gantt", ganttSchema);
+
+// Création d'un projet ---------------------------
 ganttSchema.statics.createGantt = async gantt => {
   const newGantt = new Gantt({ ...gantt });
   return newGantt.save(err => {
     if (err) console.error(err);
   });
 };
+//-------------------------------------------------
 
+// Récupération du gantt dans la base de données -----------
 ganttSchema.statics.getGantt = async function(nameService = "AcquartGraça") {
-  return await this.find({ nameService: nameService });
+  console.log("nameService:", nameService);
+  return await Gantt.findOne(
+    { nameService: nameService },
+    async (err, docs) => {
+      if (err) {
+        console.log(err);
+      }
+      return await docs.toObject();
+    }
+  );
 };
+//--------------------------------------------------------
 
-ganttSchema.statics.updateGantt = async (
+// Update des tâches ------------------------------------
+ganttSchema.statics.updateGantt = async function(
   nameService = "AcquartGraça",
   gantt
-) => {
-  return await Gantt.update({ nameService: nameService }, { ...gantt }, err => {
-    if (err) console.error(err);
-  });
+) {
+  console.log("TOupdate");
+  return await Gantt.updateOne(
+    { nameService: nameService },
+    { ...gantt },
+    async err => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
 };
+//-----------------------------------------------------
 
-const Gantt = mongoose.model("gantt", ganttSchema);
-
+// Export du schéma
 module.exports = { Gantt };
+//---------------------
