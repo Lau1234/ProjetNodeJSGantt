@@ -101,7 +101,7 @@ function generateMenu() {
   option = document.createElement("option");
   select.appendChild(option);
   option.innerHTML = "AcquartGraça";
-  option.setAttribute("value", "AcquartGraça");
+  option.setAttribute("id", "our_project");
   centralData.forEach(service => {
     if (service.nameService !== "AcquartGraça") {
       option = document.createElement("option");
@@ -124,9 +124,81 @@ function loadGantt() {
 
     let ganttToLoad;
 
+    let edit = document.getElementById("edit_project");
+    edit.innerHTML = "";
+
     if (ganttService === "AcquartGraça") {
       gantt.config.readonly = false;
       ganttToLoad = apiGantt;
+
+      let edit = document.getElementById("edit_project");
+      edit.innerHTML += `
+      <form>
+      <div>
+          <span class="name">Name :</span>
+          <input type="text" id="name" placeholder="project name" value="${
+            ganttToLoad.projects[0].name
+          }" />
+        </div>
+        <div>
+          <span class="description">Description :</span>
+          <input type="text" id="desc" placeholder="project description" value="${
+            ganttToLoad.projects[0].desc
+          }" />
+          </div>
+          <div class="daysoff">
+            <span>Days off :</span>
+            <div>
+              <input type="checkbox" id="Mo" name="Mo" ${
+                ganttToLoad.projects[0].daysOff.Mo ? "checked" : ""
+              }>
+              <label for="coding">Mo</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Tu" name="Tu" ${
+                ganttToLoad.projects[0].daysOff.Tu ? "checked" : ""
+              }>
+              <label for="coding">Tu</label>
+            </div>
+            <div>
+              <input type="checkbox" id="We" name="We" ${
+                ganttToLoad.projects[0].daysOff.We ? "checked" : ""
+              }>
+              <label for="coding">We</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Th" name="Th" ${
+                ganttToLoad.projects[0].daysOff.Th ? "checked" : ""
+              }>
+              <label for="coding">Th</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Fr" name="Fr" ${
+                ganttToLoad.projects[0].daysOff.Fr ? "checked" : ""
+              }>
+              <label for="coding">Fr</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Sa" name="Sa" ${
+                ganttToLoad.projects[0].daysOff.Sa ? "checked" : ""
+              }>
+              <label for="coding">Sa</label>
+            </div>
+            <div>
+              <input type="checkbox" id="Su" name="Su" ${
+                ganttToLoad.projects[0].daysOff.Su ? "checked" : ""
+              }>
+              <label for="coding">Su</label>
+            </div>
+          </div>
+          <input
+            type="button"
+            id="save_button"
+            value="save"
+            onclick="editProject()"
+          />
+      </form>
+      `;
     } else {
       gantt.config.readonly = true;
       ganttToLoad = centralData.find(data => data.nameService === ganttService);
@@ -201,6 +273,21 @@ function frontToBack(frontGantt) {
     //   });
     // });
   });
+}
+
+function editProject() {
+  apiGantt.projects[0].name = document.getElementById("name").value;
+  apiGantt.projects[0].desc = document.getElementById("desc").value;
+  apiGantt.projects[0].daysOff = {
+    Mo: document.getElementById("Mo").checked,
+    Tu: document.getElementById("Tu").checked,
+    We: document.getElementById("We").checked,
+    Th: document.getElementById("Th").checked,
+    Fr: document.getElementById("Fr").checked,
+    Sa: document.getElementById("Sa").checked,
+    Su: document.getElementById("Su").checked
+  };
+  updateGantt();
 }
 
 //    Update et envoie des nouvelles taches au Back

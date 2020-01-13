@@ -42,6 +42,7 @@ module.exports.listen = http => {
     socket.on("getGanttFromFront", (nameService = "AcquartGraça") => {
       Gantt.getGantt(nameService).then((res, err) => {
         if (err) return console.error("find error:", err);
+        client.emit("sendUpdate", mongoToCentral(res));
         io.emit("getGantt", res);
       });
     });
